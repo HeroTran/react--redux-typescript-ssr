@@ -12,7 +12,7 @@ import { fillStore, getPreloadActionsFromRoutes } from './lib/utils';
 
 export const router = express.Router();
 
-router.get('*', async (req, res, next) => {
+router.get(['/*/:param', '*'], async (req, res, next) => {
   try {
     const { css: styles, js: scripts } = res.locals.assets;
     const reqUrl: string = req.url.split(/[?#]/)[0];

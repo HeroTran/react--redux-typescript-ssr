@@ -11,14 +11,17 @@
     "analyze:server": "source-map-explorer dist/index.*",
     "analyze:bundle": "source-map-explorer dist/bundle.*",
     "analyze:vendors": "source-map-explorer dist/vendors.*",
-    "prestart": "rimraf dist",
     "clean": "rimraf dist",
-    "start": "cross-env NODE_ENV=development PORT=3001 nodemon",
-    "server": "cross-env NODE_ENV=production PORT=8081 node dist/index.js",
+    "debugNode": "npm run build-dev && node --inspect dist/index.js",
+    "start": "npm run clean && cross-env NODE_ENV=development PORT=3001 nodemon",
+    "server": "npm run clean && cross-env NODE_ENV=production PORT=8081 node dist/index.js",
     "prod": "cross-env NODE_ENV=production PORT=8080 node dist/index.js",
-    "build": "run-p build:*",
+    "build": "npm run clean && run-p build:*",
     "build:client": "cross-env NODE_ENV=production TARGET=client webpack",
-    "build:server": "cross-env NODE_ENV=production TARGET=server webpack"
+    "build:server": "cross-env NODE_ENV=production TARGET=server webpack",
+    "build-dev": "npm run clean && run-p build-dev:*",
+    "build-dev:client": "cross-env NODE_ENV=development TARGET=client webpack",
+    "build-dev:server": "cross-env NODE_ENV=development TARGET=server webpack"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -139,13 +142,6 @@
   "config": {
     "commitizen": {
       "path": "node_modules/cz-customizable"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged",
-      "pre-push": "npm run test"
     }
   },
   "lint-staged": {
