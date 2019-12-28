@@ -28,6 +28,9 @@ module.exports = merge(client, {
         parallel: true,
         sourceMap: true,
         terserOptions: {
+          compress: {
+            drop_console: true,
+          },
           parse: {
             ecma: 8
           },

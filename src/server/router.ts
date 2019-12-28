@@ -14,33 +14,40 @@ export const router = express.Router();
 
 router.get(['/*/:param', '*'], async (req, res, next) => {
   try {
-    const { css: styles, js: scripts } = res.locals.assets;
     const reqUrl: string = req.url.split(/[?#]/)[0];
-    const context: StaticRouterContext = {};
+    if (reqUrl.indexOf('robots') !== -1 || reqUrl.indexOf('sitemap.xml') !== -1) {
+      if (reqUrl.indexOf('robots') !== -1) {
+        res.sendFile('/robots.txt', { root: __dirname });
+      } else {
+        res.sendFile('/sitemap.xml', { root: __dirname });
+      }
+    } else {
+      const { css: styles, js: scripts } = res.locals.assets;
+      const context: StaticRouterContext = {};
+      const matchedRoutes = matchRoutes(appRoutes, reqUrl);
+      const store = configureStore();
 
-    const matchedRoutes = matchRoutes(appRoutes, reqUrl);
-    const store = configureStore();
+      const routesActions = getPreloadActionsFromRoutes(matchedRoutes);
+      const actions = preloadActions.concat(routesActions);
 
-    const routesActions = getPreloadActionsFromRoutes(matchedRoutes);
-    const actions = preloadActions.concat(routesActions);
+      await fillStore(actions, store, req.url);
 
-    await fillStore(actions, store, req.url);
+      const content = renderApp(store, context, req.url);
 
-    const content = renderApp(store, context, req.url);
+      if (context.statusCode && String(context.statusCode).startsWith('30') && context.url) {
+        return res.redirect(context.statusCode, context.url);
+      }
 
-    if (context.statusCode && String(context.statusCode).startsWith('30') && context.url) {
-      return res.redirect(context.statusCode, context.url);
-    }
+      if (context.statusCode === 404) {
+        res.status(404);
+      }
 
-    if (context.statusCode === 404) {
-      res.status(404);
-    }
-
-    const initialValues = `
+      const initialValues = `
       window.__INITIAL_STATE__ = ${serialize(store.getState())};
     `;
 
-    res.send(renderHtml({ content, styles, scripts, initialValues }));
+      res.send(renderHtml({ content, styles, scripts, initialValues }));
+    }
   } catch (error) {
     next(error);
   }
