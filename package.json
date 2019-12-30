@@ -12,13 +12,14 @@
     "analyze:bundle": "source-map-explorer dist/bundle.*",
     "analyze:vendors": "source-map-explorer dist/vendors.*",
     "clean": "rimraf dist",
+    "cleanNodeModule": "rimraf node_modules",
     "copyFile": "cpy robots.txt dist/",
     "sitemap": "node sitemap-generator",
     "debugNode": "npm run build-dev && node --inspect dist/index.js",
     "dev": "npm run clean && npm run copyFile && npm run sitemap && cross-env NODE_ENV=development PORT=3001 nodemon",
     "server": "npm run build && cross-env NODE_ENV=production PORT=8081 node dist/index.js",
     "start": "node dist/index.js",
-    "heroku-postbuild": "npm install && npm run build",
+    "heroku-postbuild": "npm run cleanNodeModule && npm install && npm run build",
     "build": "npm run clean && npm run copyFile && npm run sitemap && run-p build:*",
     "build:client": "cross-env NODE_ENV=production TARGET=client webpack",
     "build:server": "cross-env NODE_ENV=production TARGET=server webpack",
@@ -68,7 +69,8 @@
     "redux-actions": "2.6.5",
     "redux-thunk": "2.3.0",
     "reselect": "4.0.0",
-    "serialize-javascript": "2.1.2"
+    "serialize-javascript": "2.1.2",
+    "cross-env": "5.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.4.5",
@@ -107,7 +109,6 @@
     "babel-register": "6.26.0",
     "circular-dependency-plugin": "5.0.2",
     "cpy-cli": "3.0.0",
-    "cross-env": "5.2.0",
     "css-loader": "3.0.0",
     "cz-customizable": "6.2.0",
     "file-loader": "4.0.0",
