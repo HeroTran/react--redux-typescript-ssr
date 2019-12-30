@@ -16,7 +16,7 @@ import { router } from './router';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 5000;
 const app = express();
 
 app.disable('x-powered-by');
