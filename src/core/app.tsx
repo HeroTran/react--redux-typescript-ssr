@@ -7,5 +7,5 @@ import { renderRouting } from './common/renderRouting';
 import './assets/styles/global.scss';
 
 export const App = hot(() => {
-  return <PageTemplate auth={false} title="React Typescript App">{renderRouting(appRoutes)}</PageTemplate>;
+  return <PageTemplate auth={false} title="Welcome my app">{renderRouting(appRoutes)}</PageTemplate>;
 });
