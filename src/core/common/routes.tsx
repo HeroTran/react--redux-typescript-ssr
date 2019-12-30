@@ -10,7 +10,7 @@ export const routes: AppRoute[] = [
     component: UserContainer,
   },
   {
-    path: '/user',
+    path: '/user/:uuid',
     exact: true,
     component: UserContainer,
   },

@@ -13,7 +13,13 @@ class User extends React.Component<userProps, userStates> {
     super(props);
   }
   componentDidMount() {
-    this.props.getUser('HeroTran');
+    const username = this.props.match.params.uuid;
+    if(username){
+      this.props.getUser(username);
+    } else{
+      this.props.getUser('HeroTran');
+    }
+    
   }
   render() {
     const { user } = this.props;
