@@ -15,6 +15,7 @@
     "copyFile": "cpy robots.txt dist/",
     "sitemap": "node sitemap-generator",
     "debugNode": "npm run build-dev && node --inspect dist/index.js",
+    "heroku-postbuild": "npm run build && cross-env NODE_ENV=production node dist/index.js",
     "start": "npm run clean && npm run copyFile && npm run sitemap && cross-env NODE_ENV=development PORT=3001 nodemon",
     "server": "npm run build && cross-env NODE_ENV=production PORT=8081 node dist/index.js",
     "prod": "npm run build && cross-env NODE_ENV=production PORT=8080 node dist/index.js",
