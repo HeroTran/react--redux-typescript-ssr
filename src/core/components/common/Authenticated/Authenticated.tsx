@@ -21,7 +21,7 @@ export default (AuthComponent: any) => {
     }
   }
   const mapStateToProps = () => ({
-    isLoggedIn: false
+    isLoggedIn: true
   });
   const mapDispatchToProps = () => ({
   });
