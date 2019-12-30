@@ -15,7 +15,7 @@ import { router } from './router';
 // tslint:disable:no-console
 
 const isProduction = process.env.NODE_ENV === 'production';
-const host = process.env.HOST || 'localhost';
+const host = process.env.HOST || 'https://quiet-plateau-45899.herokuapp.com/';
 const port = process.env.PORT || 3001;
 const app = express();
 
