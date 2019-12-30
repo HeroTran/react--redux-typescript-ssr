@@ -15,8 +15,8 @@ import { router } from './router';
 // tslint:disable:no-console
 
 const isProduction = process.env.NODE_ENV === 'production';
-// const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 5000;
+const host = process.env.HOST || 'localhost';
+const port = process.env.PORT || 3001;
 const app = express();
 
 app.disable('x-powered-by');
@@ -55,6 +55,5 @@ app.use((err: string, req: express.Request, res: express.Response, next: express
 });
 
 app.listen(port, () => {
-  // console.info(`✅✅✅ Server is running at http://${host}:${port} ✅✅✅`);
-  console.info(`✅✅✅ Server is running at ${port} ✅✅✅`);
+  console.info(`✅✅✅ Server is running at http://${host}:${port} ✅✅✅`);
 });
