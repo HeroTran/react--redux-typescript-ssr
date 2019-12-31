@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Header } from '@core/ui/molecules';
+import Header from '@core/ui/molecules/Header/Header';
 
 import styles from './PageTemplate.scss';
 

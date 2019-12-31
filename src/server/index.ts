@@ -12,6 +12,10 @@ import { assetsParser } from './middlewares/assetsParser';
 import { getRequire } from './lib/utils';
 import { router } from './router';
 
+// language
+import Backend from 'i18next-node-fs-backend';
+import i18n from './../../i18n';
+import fs from 'fs';
 // tslint:disable:no-console
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -44,7 +48,32 @@ if (!isProduction) {
 }
 
 app.use(assetsParser(isProduction));
-app.use('/', router);
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = (relativePath: any) => path.resolve(appDirectory, relativePath);
+const appSrc = resolveApp('src/core');
+const i18nextMiddleware = require('i18next-express-middleware');
+console.log('appSrc', appSrc);
+i18n
+  .use(Backend)
+  .use(i18nextMiddleware.LanguageDetector)
+  .init(
+    {
+      debug: false,
+      preload: ['en', 'de'],
+      ns: ['translations'],
+      defaultNS: 'translations',
+      backend: {
+        loadPath: `${appSrc}/assets/locales/{{lng}}/{{ns}}.json`,
+        addPath: `${appSrc}/assets/locales/{{lng}}/{{ns}}.missing.json`
+      }
+    },
+    () => {
+      app
+        .use(i18nextMiddleware.handle(i18n))
+        .use('/locales', express.static(`${appSrc}/assets/locales`))
+        .use('/', router);
+    }
+  );
 
 app.use((err: string, req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (!isProduction) {

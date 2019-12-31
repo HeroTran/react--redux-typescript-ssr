@@ -1,33 +1,39 @@
 import * as React from 'react';
 import { PreviewImage } from '@core/ui/atoms';
 import { History } from 'history';
-type userProps = {
+import { withTranslation, WithTranslation } from 'react-i18next';
+import { i18n, TFunction } from 'i18next';
+
+type UserProps = {
   getUser: (name: string) => void;
   user: any;
   match: HyResult.ReactRouter.MatchParam;
   history: History;
+  t: TFunction;
+  i18n: i18n;
 };
 type userStates = {};
-class User extends React.Component<userProps, userStates> {
-  constructor(props: userProps) {
+type UserType = UserProps & WithTranslation;
+class User extends React.Component<UserType, userStates> {
+  constructor(props: UserType) {
     super(props);
   }
   componentDidMount() {
     const username = this.props.match.params.uuid;
-    if(username){
+    if (username) {
       this.props.getUser(username);
-    } else{
+    } else {
       this.props.getUser('HeroTran');
     }
-    
+
   }
   render() {
-    const { user } = this.props;
+    const { user, t } = this.props;
     return (
       <React.Fragment>
         {user && (
           <React.Fragment>
-            <h1>{user.login} avatar:</h1>
+            <h1>{user.login} {t('avatar')}</h1>
             <PreviewImage src={user.avatar_url} />
           </React.Fragment>
         )}
@@ -36,4 +42,4 @@ class User extends React.Component<userProps, userStates> {
   }
 }
 
-export default User;
+export default withTranslation()(User);

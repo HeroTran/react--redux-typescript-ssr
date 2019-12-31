@@ -42,11 +42,24 @@ router.get(['/*/:param', '*'], async (req, res, next) => {
         res.status(404);
       }
 
-      const initialValues = `
-      window.__INITIAL_STATE__ = ${serialize(store.getState())};
-    `;
+      const initialI18nStore = {};
+      req['i18n'].languages.forEach((lang: string | number) => {
+        initialI18nStore[lang] = req['i18n'].services.resourceStore.data[lang];
+      });
+      const initialLanguage = req['i18n'].language === 'vi' ? 'en' : req['i18n'].language;
 
-      res.send(renderHtml({ content, styles, scripts, initialValues }));
+      const initialValues = `
+            window.__INITIAL_STATE__ = ${serialize(store.getState())};
+          `;
+
+      const initialI18nStoreString = `
+            window.initialI18nStore = JSON.parse('${JSON.stringify(initialI18nStore)}');
+          `;
+      const initialLanguageString = `
+            window.initialLanguage = '${initialLanguage}';
+          `;
+
+      res.send(renderHtml({ content, styles, scripts, initialValues, initialI18nStoreString, initialLanguageString }));
     }
   } catch (error) {
     next(error);

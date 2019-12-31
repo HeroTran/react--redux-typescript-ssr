@@ -9,9 +9,12 @@ interface HtmlProps {
   styles?: string[];
   scripts?: string[];
   initialValues?: string;
+  initialI18nStoreString?: string;
+  initialLanguageString?: string;
 }
 
-export const renderHtml = ({ content, styles = [], scripts = [], initialValues = '' }: HtmlProps) => {
+export const renderHtml = ({ content, styles = [], scripts = [], initialValues = '',
+  initialI18nStoreString = '', initialLanguageString = '' }: HtmlProps) => {
   const helmet = Helmet.renderStatic();
   const htmlAttrs = helmet.htmlAttributes.toComponent();
   const bodyAttrs = helmet.bodyAttributes.toComponent();
@@ -35,6 +38,8 @@ export const renderHtml = ({ content, styles = [], scripts = [], initialValues =
         ))}
         <link rel="preconnect" href={config.apiUrl} />
         <script dangerouslySetInnerHTML={{ __html: initialValues }} />
+        <script dangerouslySetInnerHTML={{ __html: initialI18nStoreString }} />
+        <script dangerouslySetInnerHTML={{ __html: initialLanguageString }} />
       </head>
       <body {...bodyAttrs}>
         <div id="root" dangerouslySetInnerHTML={{ __html: content }} />
