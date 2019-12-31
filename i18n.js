@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import XHR from 'i18next-xhr-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
-
+const isProduction = process.env.NODE_ENV === 'production';
 const options = {
   fallbackLng: 'en',
   load: 'languageOnly', // we only provide en, de -> no region specific locals like en-US, de-DE
@@ -11,7 +11,7 @@ const options = {
   defaultNS: 'translations',
 
   saveMissing: true,
-  debug: true,
+  debug: isProduction ? false : true,
 
   interpolation: {
     escapeValue: false, // not needed for react!!

@@ -58,7 +58,7 @@ i18n
   .use(i18nextMiddleware.LanguageDetector)
   .init(
     {
-      debug: false,
+      debug: isProduction ? false : true,
       preload: ['en', 'de'],
       ns: ['translations'],
       defaultNS: 'translations',
