@@ -52,13 +52,12 @@ const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath: any) => path.resolve(appDirectory, relativePath);
 const appSrc = resolveApp('src/core');
 const i18nextMiddleware = require('i18next-express-middleware');
-console.log('appSrc', appSrc);
 i18n
   .use(Backend)
   .use(i18nextMiddleware.LanguageDetector)
   .init(
     {
-      debug: isProduction ? false : true,
+      debug: false,
       preload: ['en', 'de'],
       ns: ['translations'],
       defaultNS: 'translations',
